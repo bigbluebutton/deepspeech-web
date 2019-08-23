@@ -20,7 +20,6 @@ class DeepspeechController < ApplicationController
   def check_status
     jobID = params[:jobID]
     db =  SQLite3::Database.open "db/development.sqlite3"
-    status = "completed"
     status = db.get_first_row "select status from job_statuses where jobID = '#{jobID}'"
     db.close
     data = "{\"status\" : \"#{status[0]}\"}"
