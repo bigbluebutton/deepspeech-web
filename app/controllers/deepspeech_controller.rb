@@ -48,7 +48,7 @@ class DeepspeechController < ApplicationController
   def generate_words(jobID)
     model_path = "/home/ari/workspace/temp"
     filepath = "#{Rails.root}/storage/#{jobID}"
-    SpeechToText::MozillaDeepspeechS2T.create_job("#{filepath}/audio.wav","#{filepath}/audio.json",model_path)
+    SpeechToText::MozillaDeepspeechS2T.generate_transcript("#{filepath}/audio.wav","#{filepath}/audio.json",model_path)
     update_status(jobID,"completed")
   end
 
