@@ -7,6 +7,11 @@ class DeepspeechController < ApplicationController
 
   def create_job
     audio = params[:file]
+    if audio.nil?
+      data = "{\"message\" : \"file not found\"}"
+      render :json=>data
+      return
+    end
     jobID = generate_jobID
     File.open("#{Rails.root}/storage/#{jobID}/audio.wav","wb") do |file|
       file.write audio.read
@@ -19,6 +24,11 @@ class DeepspeechController < ApplicationController
 
   def check_status
     jobID = params[:jobID]
+    if jobID.nil?
+      data = "{\"message\" : \"jobID not found\"}"
+      render :json=>data
+      return
+    end
     db =  SQLite3::Database.open "db/development.sqlite3"
     status = db.get_first_row "select status from job_statuses where jobID = '#{jobID}'"
     db.close
@@ -28,6 +38,11 @@ class DeepspeechController < ApplicationController
 
   def transcript
     jobID = params[:jobID]
+    if jobID.nil?
+      data = "{\"message\" : \"jobID not found\"}"
+      render :json=>data
+      return
+    end
     data = "{\"message\" : \"File not found. Make sure status is completed\"}"
     if File.exist?("#{Rails.root}/storage/#{jobID}/audio.json")
       file = File.open("#{Rails.root}/storage/#{jobID}/audio.json")
