@@ -32,6 +32,11 @@ class DeepspeechController < ApplicationController
     db =  SQLite3::Database.open "db/development.sqlite3"
     status = db.get_first_row "select status from job_statuses where jobID = '#{jobID}'"
     db.close
+    if status.nil?
+      data = "{\"message\" : \"No jobID found\"}"
+      render :json=>data
+      return
+    end
     data = "{\"status\" : \"#{status[0]}\"}"
     render :json=>data
   end
@@ -43,7 +48,7 @@ class DeepspeechController < ApplicationController
       render :json=>data
       return
     end
-    data = "{\"message\" : \"File not found. Make sure status is completed\"}"
+    data = "{\"message\" : \"File not found. Please check if jobID is correct and make sure status is completed\"}"
     if File.exist?("#{Rails.root}/storage/#{jobID}/audio.json")
       file = File.open("#{Rails.root}/storage/#{jobID}/audio.json")
       data = JSON.load file
