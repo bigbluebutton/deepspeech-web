@@ -2,10 +2,20 @@ require 'securerandom'
 require 'json'
 require 'sqlite3'
 require 'speech_to_text'
+require 'deepspeech.rb'
+
 
 class DeepspeechController < ApplicationController
+   protect_from_forgery with: :null_session
+   skip_before_action :verify_authenticity_token
 
-  def create_job
+   def home
+     data = "{\"message\" : \"hello\"}"
+     $redis.lpush("print msg", data.to_json)
+     CreateJobWorker.perform_async()
+   end
+
+   def create_job
     audio = params[:file]
     if audio.nil?
       data = "{\"message\" : \"file not found\"}"
