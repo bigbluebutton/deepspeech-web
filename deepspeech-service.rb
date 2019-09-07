@@ -1,4 +1,8 @@
-require './lib/deepspeech.rb'
+
+require './lib/deepspeech'
+
+props = YAML::load_file('settings.yaml')
+
 
 if ENV['REDIS_URL'].nil?
   redis = Redis.new
@@ -6,11 +10,14 @@ else
   redis = Redis.new(url: ENV['REDIS_URL'])
 end
 
+JOB_KEY = props["redis_jobs_transcript"]
+num_entries = redis.llen(JOB_KEY)
+puts "num_entries = #{num_entries}"
+
 loop do
 #for i in 1..num_entries do
-  #list, element = redis.blpop(RECORDINGS_JOB_LIST_KEY)
-  #TextTrack.logger.info("Processing analytics for recording #{element}")
-  #job_entry = JSON.parse(element)
-  #puts job_entry
-  CreateJobWorker.perform_async()
+  job_list, data = redis.blpop(JOB_KEY)
+  job_entry = JSON.parse(data)
+  puts "job_entry...............................#{job_entry["job_id"]}"
+  MozillaDeepspeech::TranscriptWorker.perform_async(job_entry["job_id"])
 end

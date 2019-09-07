@@ -1,0 +1,13 @@
+---
+redis_host: 127.0.0.1
+redis_port: 6379
+# Uncomment and set password if redis require it.
+# redis_password: changeme
+
+log_to_file: false
+
+# Used to namespace the redis keys used by rails.
+# see config/initializers/redis.rb
+#
+redis_list_namespace: "bbb_texttrack_service"
+redis_jobs_transcript: "bbb_texttrack_service:transcript"

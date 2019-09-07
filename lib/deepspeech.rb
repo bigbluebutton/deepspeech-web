@@ -7,10 +7,10 @@
 # Copyright (c) 2019 BigBlueButton Inc. and by respective authors (see below).
 #
 
-path = File.expand_path(File.join(File.dirname(__FILE__), '../lib'))
-$LOAD_PATH << path
+#path = File.expand_path(File.join(File.dirname(__FILE__), '../lib'))
+#$LOAD_PATH << path
 
-require 'deepspeech/createjob_worker'
+require_relative './deepspeech/mozilla_deepspeech_worker'
 
 module Deepspeech
   def self.logger=(log)
