@@ -1,39 +1,41 @@
-require 'securerandom'
-require 'json'
-require 'sqlite3'
-require 'speech_to_text'
-
 class DeepspeechController < ApplicationController
+   protect_from_forgery with: :null_session
+   skip_before_action :verify_authenticity_token
 
-  def create_job
+   def home
+     data = {message: "hello"}
+     $redis.lpush("create_job", data.to_json)
+   end
+
+   def create_job
     audio = params[:file]
     if audio.nil?
       data = "{\"message\" : \"file not found\"}"
       render :json=>data
       return
     end
-    jobID = generate_jobID
-    File.open("#{Rails.root}/storage/#{jobID}/audio.wav","wb") do |file|
+    job_id = generate_job_id
+    File.open("#{Rails.root}/storage/#{job_id}/audio.wav","wb") do |file|
       file.write audio.read
     end
-      update_status(jobID,"inProgress")
-      Thread.new{generate_words(jobID)}
-      data = "{\"jobID\" : \"#{jobID}\"}"
-    render :json=>data
+      set_status(job_id)
+      data = {"job_id" => job_id}
+      render :json=>data
+      $redis.lpush("transcript", data.to_json)
   end
 
   def check_status
-    jobID = params[:jobID]
-    if jobID.nil?
-      data = "{\"message\" : \"jobID not found\"}"
+    job_id = params[:job_id]
+    if job_id.nil?
+      data = "{\"message\" : \"job_id not found\"}"
       render :json=>data
       return
     end
     db =  SQLite3::Database.open "db/development.sqlite3"
-    status = db.get_first_row "select status from job_statuses where jobID = '#{jobID}'"
+    status = db.get_first_row "select status from job_statuses where jobID = '#{job_id}'"
     db.close
     if status.nil?
-      data = "{\"message\" : \"No jobID found\"}"
+      data = "{\"message\" : \"No job_id found\"}"
       render :json=>data
       return
     end
@@ -42,56 +44,36 @@ class DeepspeechController < ApplicationController
   end
 
   def transcript
-    jobID = params[:jobID]
-    if jobID.nil?
-      data = "{\"message\" : \"jobID not found\"}"
+    job_id = params[:job_id]
+    if job_id.nil?
+      data = "{\"message\" : \"job_id is nil\"}"
       render :json=>data
       return
     end
-    data = "{\"message\" : \"File not found. Please check if jobID is correct and make sure status is completed\"}"
-    if File.exist?("#{Rails.root}/storage/#{jobID}/audio.json")
-      file = File.open("#{Rails.root}/storage/#{jobID}/audio.json")
+    data = "{\"message\" : \"File not found. Please check if job_id is correct and make sure status is completed\"}"
+    if File.exist?("#{Rails.root}/storage/#{job_id}/audio.json")
+      file = File.open("#{Rails.root}/storage/#{job_id}/audio.json")
       data = JSON.load file
     end
     render :json=>data
   end
 
   private
-  def generate_jobID
-    jobID = SecureRandom.hex(10)
+  def generate_job_id
+    job_id = SecureRandom.hex(10)
+    time = (Time.now.to_f * 1000).to_i
+    job_id += "_#{time.to_s}"
     Dir.chdir "#{Rails.root}/storage"
-    system("mkdir #{jobID}")
+    system("mkdir #{job_id}")
     Dir.chdir "#{Rails.root}"
-    return jobID
+    return job_id
   end
 
-  def generate_words(jobID)
-    model_path = "/home/ari/workspace/temp"
-    filepath = "#{Rails.root}/storage/#{jobID}"
-    SpeechToText::MozillaDeepspeechS2T.generate_transcript("#{filepath}/audio.wav","#{filepath}/audio.json",model_path)
-    update_status(jobID,"completed")
-  end
-
-  def update_status(jobID,status)
+  def set_status(job_id)
+    status = "pending"
     db = SQLite3::Database.open "db/development.sqlite3"
-    if status == "inProgress"
-      query = "INSERT INTO job_statuses (jobID, status, created_at, updated_at) VALUES ('#{jobID}', '#{status}', '#{Time.now}', '#{Time.now}')"
-      db.execute(query)
-    elsif status == "completed"
-        if File.exist?("#{Rails.root}/storage/#{jobID}/audio.json")
-          file = File.open("#{Rails.root}/storage/#{jobID}/audio.json","r")
-          data = JSON.load file
-          if data["words"].nil?
-            status = "failed"
-          end
-        else
-          status = "failed"
-        end
-        query = "update job_statuses set status = '#{status}', updated_at = '#{Time.now}' where jobID = '#{jobID}'"
-        db.execute(query)
-    else
-      puts "something went wrong in update status.."
-    end
+    query = "INSERT INTO job_statuses (jobID, status, created_at, updated_at) VALUES ('#{job_id}', '#{status}', '#{Time.now}', '#{Time.now}')"
+    db.execute(query)
     db.close
-    end
   end
+end

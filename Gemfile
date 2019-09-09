@@ -7,10 +7,16 @@ ruby '2.6.1'
 gem 'rails', '~> 5.2.3'
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
+gem 'speech_to_text', :git => 'https://github.com/parthikmodi/speech_to_text.git'
 # Use Puma as the app server
 gem 'puma', '~> 3.11'
 # Use SCSS for stylesheets
+gem "faktory_worker_ruby"
 gem 'sass-rails', '~> 5.0'
+gem 'redis', '4.1.2'
+gem 'redis-namespace'
+gem 'redis-rails'
+gem 'redis-rack-cache'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
@@ -29,7 +35,7 @@ gem 'jbuilder', '~> 2.5'
 
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
-gem 'speech_to_text', :git => 'https://github.com/parthikmodi/speech_to_text.git'
+#gem 'speech_to_text', :git => 'https://github.com/parthikmodi/speech_to_text.git'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
