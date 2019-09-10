@@ -32,7 +32,7 @@ class DeepspeechController < ApplicationController
       return
     end
     db =  SQLite3::Database.open "db/development.sqlite3"
-    status = db.get_first_row "select status from job_statuses where job_id = '#{job_id}'"
+    status = db.get_first_row "select status from job_statuses where jobID = '#{job_id}'"
     db.close
     if status.nil?
       data = "{\"message\" : \"No job_id found\"}"
@@ -46,7 +46,7 @@ class DeepspeechController < ApplicationController
   def transcript
     job_id = params[:job_id]
     if job_id.nil?
-      data = "{\"message\" : \"job_id not found\"}"
+      data = "{\"message\" : \"job_id is nil\"}"
       render :json=>data
       return
     end
