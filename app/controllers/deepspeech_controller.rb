@@ -60,11 +60,13 @@ class DeepspeechController < ApplicationController
 
   private
   def generate_job_id
-    jobID = SecureRandom.hex(10)
+    job_id = SecureRandom.hex(10)
+    time = (Time.now.to_f * 1000).to_i
+    job_id += "_#{time.to_s}"
     Dir.chdir "#{Rails.root}/storage"
-    system("mkdir #{jobID}")
+    system("mkdir #{job_id}")
     Dir.chdir "#{Rails.root}"
-    return jobID
+    return job_id
   end
 
   def set_status(job_id)
