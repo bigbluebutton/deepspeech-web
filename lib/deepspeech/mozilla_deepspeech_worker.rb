@@ -19,7 +19,7 @@ module MozillaDeepspeech
     def perform(job_id) # rubocop:disable Metrics/MethodLength
       status = 'inProgress'
       update_status(job_id, status)
-      model_path = '/home/ari/workspace/temp'
+      model_path = '/home/deepspeech/temp'
       filepath = "#{Rails.root}/storage/#{job_id}"
       puts "start transcript for #{job_id}"
       SpeechToText::MozillaDeepspeechS2T.generate_transcript("#{filepath}/audio.wav", "#{filepath}/audio.json", model_path)
@@ -40,7 +40,7 @@ module MozillaDeepspeech
 
     def update_status(job_id, status)
       db = SQLite3::Database.open 'db/development.sqlite3'
-      query = "update job_statuses set status = '#{status}', updated_at = '#{Time.now}' where jobID = '#{job_id}'"
+      query = "update jobstatuses set status = '#{status}', updated_at = '#{Time.now}' where job_id = '#{job_id}'"
       db.execute(query)
       db.close
     end

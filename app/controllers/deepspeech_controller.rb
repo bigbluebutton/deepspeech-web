@@ -39,7 +39,7 @@ class DeepspeechController < ApplicationController
       return
     end
     db = SQLite3::Database.open 'db/development.sqlite3'
-    query = "select status from job_statuses where jobID = '#{job_id}'"
+    query = "select status from jobstatuses where job_id = '#{job_id}'"
     status = db.get_first_row query
     db.close
     if status.nil?
@@ -81,7 +81,7 @@ class DeepspeechController < ApplicationController
   def set_status(job_id) # rubocop:disable Naming/AccessorMethodName
     status = 'pending'
     db = SQLite3::Database.open 'db/development.sqlite3'
-    query = "INSERT INTO job_statuses (jobID, status, created_at, updated_at) VALUES ('#{job_id}', '#{status}', '#{Time.now}', '#{Time.now}')"
+    query = "INSERT INTO jobstatuses (job_id, status, created_at, updated_at) VALUES ('#{job_id}', '#{status}', '#{Time.now}', '#{Time.now}')"
     db.execute(query)
     db.close
   end
