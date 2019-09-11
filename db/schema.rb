@@ -10,9 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_22_103730) do
+ActiveRecord::Schema.define(version: 2019_09_11_175040) do
 
-  create_table "jobstatuses", force: :cascade do |t|
+  create_table "job_statuses", force: :cascade do |t|
     t.string "job_id"
     t.string "status"
     t.datetime "created_at", null: false

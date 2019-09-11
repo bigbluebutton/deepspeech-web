@@ -16,7 +16,7 @@ puts "num_entries = #{num_entries}"
 
 loop do
   # for i in 1..num_entries do
-  job_list, data = redis.blpop(JOB_KEY)
+  _job_list, data = redis.blpop(JOB_KEY)
   job_entry = JSON.parse(data)
   puts "job_entry...#{job_entry['job_id']}"
   MozillaDeepspeech::TranscriptWorker.perform_async(job_entry['job_id'])

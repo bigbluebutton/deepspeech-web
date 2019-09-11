@@ -38,16 +38,13 @@ class DeepspeechController < ApplicationController
       render json: data
       return
     end
-    db = SQLite3::Database.open 'db/development.sqlite3'
-    query = "select status from jobstatuses where job_id = '#{job_id}'"
-    status = db.get_first_row query
-    db.close
-    if status.nil?
-      data = '{"message" : "No job_id found"}'
+    job = JobStatus.find_by(job_id: job_id)
+    if job.nil?
+      data = "{\"message\" : \"No job found\"}"
       render json: data
-      return
+      return  
     end
-    data = "{\"status\" : \"#{status[0]}\"}"
+    data = "{\"status\" : \"#{job.status}\"}"
     render json: data
   end
 
@@ -79,11 +76,12 @@ class DeepspeechController < ApplicationController
   end
 
   def set_status(job_id) # rubocop:disable Naming/AccessorMethodName
-    status = 'pending'
-    db = SQLite3::Database.open 'db/development.sqlite3'
-    query = "INSERT INTO jobstatuses (job_id, status, created_at, updated_at) VALUES ('#{job_id}', '#{status}', '#{Time.now}', '#{Time.now}')"
-    db.execute(query)
-    db.close
+    job = JobStatus.new
+    job.job_id = job_id
+    job.status = 'pending'
+    job.created_at = Time.now
+    job.updated_at = Time.now
+    job.save
   end
 end
 # rubocop:enable Style/Documentation

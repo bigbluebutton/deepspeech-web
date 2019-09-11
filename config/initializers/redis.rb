@@ -2,13 +2,7 @@
 
 require 'yaml'
 
-redis = if ENV['REDIS_URL'].nil?
-          Redis.new
-        else
-          Redis.new(url: ENV['REDIS_URL'])
-        end
-
-props = YAML.load(File.open('settings.yaml'))
+props = YAML.safe_load(File.open('settings.yaml'))
 redis_namespace = props['redis_list_namespace']
 
 # Namespace our keys to bbb_texttrack_service:<whatever>

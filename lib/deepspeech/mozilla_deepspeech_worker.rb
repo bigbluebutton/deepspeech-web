@@ -39,10 +39,10 @@ module MozillaDeepspeech
     end
 
     def update_status(job_id, status)
-      db = SQLite3::Database.open 'db/development.sqlite3'
-      query = "update jobstatuses set status = '#{status}', updated_at = '#{Time.now}' where job_id = '#{job_id}'"
-      db.execute(query)
-      db.close
+      job = JobStatus.find_by(job_id: job_id)
+      job.status = status
+      job.updated_at = Time.now
+      job.save
     end
   end
 end
