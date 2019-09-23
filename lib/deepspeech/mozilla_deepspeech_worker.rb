@@ -39,10 +39,12 @@ module MozillaDeepspeech
     end
 
     def update_status(job_id, status)
-      job = JobStatus.find_by(job_id: job_id)
-      job.status = status
-      job.updated_at = Time.now
-      job.save
+      ActiveRecord::Base.connection_pool.with_connection do
+        job = JobStatus.find_by(job_id: job_id)
+        job.status = status
+        job.updated_at = Time.now
+        job.save
+      end
     end
   end
 end

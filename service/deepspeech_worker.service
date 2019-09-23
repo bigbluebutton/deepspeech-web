@@ -1,0 +1,13 @@
+# deepspeech_worker.service
+[Unit]
+Description=Deepspeech Worker
+[Service]
+# Environment=LANG=en_US.UTF-8 FAKTORY_PROVIDER=FAKTORY_URL FAKTORY_URL=tcp://:64922309996db536@localhost:7419
+Environment=LANG=en_US.UTF-8 FAKTORY_PROVIDER=FAKTORY_URL FAKTORY_URL=tcp://:ab1b8c1c516b1f6d@localhost:7419
+User=ubuntu
+# WorkingDirectory=/home/ubuntu/worker/deepspeech-web
+WorkingDirectory=/usr/local/worker/deepspeech-web
+ExecStart=/home/ubuntu/.rbenv/shims/bundle exec faktory-worker  -r ./deepspeech-worker.rb
+Restart=always
+[Install]
+WantedBy=multi-user.target

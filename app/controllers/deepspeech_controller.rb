@@ -28,7 +28,7 @@ class DeepspeechController < ApplicationController
     render json: data
     # rubocop:disable Style/GlobalVars
     $redis.lpush('transcript', data.to_json)
-   # rubocop:enable Style/GlobalVars
+    # rubocop:enable Style/GlobalVars
   end
 
   def check_status # rubocop:disable Metrics/MethodLength
@@ -40,9 +40,9 @@ class DeepspeechController < ApplicationController
     end
     job = JobStatus.find_by(job_id: job_id)
     if job.nil?
-      data = "{\"message\" : \"No job found\"}"
+      data = '{"message" : "No job found"}'
       render json: data
-      return  
+      return
     end
     data = "{\"status\" : \"#{job.status}\"}"
     render json: data
