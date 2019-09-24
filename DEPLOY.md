@@ -154,6 +154,11 @@ $user/deepspeech: sudo wget https://github.com/bazelbuild/bazel/releases/downloa
 $user/deepspeech: sudo chmod +x bazel-0.15.0-installer-linux-x86_64.sh
 $user/deepspeech: sudo ./bazel-0.15.0-installer-linux-x86_64.sh –-user --bin=$HOME/bin
 
+#if you get an error in above command then remove user flag
+$user/deepspeech: sudo ./bazel-0.15.0-installer-linux-x86_64.sh
+$user/deepspeech: export PATH="$PATH:/home/<user>/bin"
+#you will get path after successfully executing command
+#for example: make sure you have /home/user/bin dir in your system
 #The --user flag installs Bazel to the $HOME/bin directory on your system and sets the .bazelrc path to $HOME/.bazelrc.
 ```
 
@@ -226,3 +231,134 @@ $user/deepspeech/temp: ./deepspeech --model models/output_graph.pbmm --alphabet 
 ```
 
 At this point, you should get words for sample audios inside the temp/audio directory.
+# Redis server
+```
+$user: sudo apt-get update
+$user: sudo apt-get upgrade
+```
+
+1. Install & enable Redis server
+```
+sudo apt-get install redis-server
+sudo systemctl enable redis-server.service
+```
+
+2. Configure redis server
+```
+$user: sudo vim /etc/redis/redis.conf
+#you can use nano instead of vim
+#copy following lines or find and remove comments for these lines
+maxmemory 256mb
+maxmemory-policy allkeys-lru
+#save and exit
+```
+
+3. Restart service
+```
+$user: sudo systemctl restart redis-server.service
+```
+
+4. Install redis php extension
+```
+$user: sudo apt-get install php-redis
+```
+
+5. Test the connection
+```
+$user: redis-cli ping
+#you should get response "PONG"
+```
+
+6. Important commands
+```
+#restart redis server
+$user: sudo systemctl restart redis
+#redis-cli commands
+$user: redis-cli info
+$user: redis-cli stats
+$user: redis-cli server
+```
+
+# Install faktory worker
+```
+#download files from this link https://github.com/contribsys/faktory/releases
+#you will need 2 files.
+#faktory-1.0.1-1.x86_64.rpm & faktory_1.0.1-1_amd64.deb
+
+$user: dpkg -i </file_path/faktory_1.0.1-1_amd64.deb>
+$user: yum install </file_path/faktory-1.0.1-1.x86_64.rpm>
+```
+
+# set password for worker and Service
+```
+#find password
+$user: cat /etc/faktory/password
+
+#set password
+#open working_dir/service/deepspeech_worker.service and find this line given below.
+#Environment=LANG=en_US.UTF-8 FAKTORY_PROVIDER=FAKTORY_URL FAKTORY_URL=tcp://:<password>@localhost:7419
+#replace your pasword with <password> . save & exit
+#do the same thing for working_dir/service/deepspeech_service.service
+```
+
+# Copy /usr/local/deepspeech-web/service/<all-files>.service to /etc/systemd/system
+```
+cd /usr/local/deepspeech-web/service/
+sudo cp *.service /etc/systemd/system
+```
+
+# Start all services
+```
+sudo systemctl enable deepspeech_rails
+sudo systemctl start deepspeech_rails
+
+sudo systemctl enable deepspeech_service
+sudo systemctl start deepspeech_service
+
+sudo systemctl enable deepspeech_worker
+sudo systemctl start deepspeech_worker
+```
+
+# Restart/stop services
+```
+sudo systemctl restart service-name
+sudo systemctl stop service-name
+```
+
+# Check status
+```
+sudo systemctl status service-name
+```
+
+# edit service
+```
+sudo systemctl edit service-name --full
+sudo systemctl daemon-reload (After editing)
+sudo journalctl -u service-name.service
+```
+
+# check logs
+```
+sudo journalctl -u service-name.service
+```
+
+# clear logs
+```
+sudo journalctl --rotate
+sudo journalctl --vacuum-time=1s
+```
+
+# Keep your code clean with Rubocop
+1. install rubocop
+```
+$user: gem install rubocop
+```
+2. Run rubocop to find coding offences
+```
+$user: cd <working_dir>
+$user/working_dir: rubocop
+```
+3. Safe auto corrections
+```
+$user/working_dir: rubocop --safe-auto-correct --disable-uncorrectable
+```

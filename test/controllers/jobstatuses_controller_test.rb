@@ -19,7 +19,9 @@ class JobstatusesControllerTest < ActionDispatch::IntegrationTest
 
   test 'should create jobstatus' do
     assert_difference('Jobstatus.count') do
-      post jobstatuses_url, params: { jobstatus: { jobID: @jobstatus.jobID, status: @jobstatus.status } }
+      post jobstatuses_url, params:
+      { jobstatus: { jobID: @jobstatus.jobID,
+                     status: @jobstatus.status } }
     end
 
     assert_redirected_to jobstatus_url(Jobstatus.last)
@@ -36,7 +38,9 @@ class JobstatusesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should update jobstatus' do
-    patch jobstatus_url(@jobstatus), params: { jobstatus: { jobID: @jobstatus.jobID, status: @jobstatus.status } }
+    patch jobstatus_url(@jobstatus), params:
+     { jobstatus: { jobID: @jobstatus.jobID,
+                    status: @jobstatus.status } }
     assert_redirected_to jobstatus_url(@jobstatus)
   end
 

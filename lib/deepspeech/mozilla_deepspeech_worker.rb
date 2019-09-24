@@ -8,7 +8,9 @@ require 'json'
 require 'sqlite3'
 require 'speech_to_text'
 
-rails_environment_path = File.expand_path(File.join(__dir__, '..', '..', 'config', 'environment'))
+rails_environment_path = File.expand_path(
+  File.join(__dir__, '..', '..', 'config', 'environment')
+)
 require rails_environment_path
 
 module MozillaDeepspeech
@@ -22,7 +24,11 @@ module MozillaDeepspeech
       model_path = '/home/deepspeech/temp'
       filepath = "#{Rails.root}/storage/#{job_id}"
       puts "start transcript for #{job_id}"
-      SpeechToText::MozillaDeepspeechS2T.generate_transcript("#{filepath}/audio.wav", "#{filepath}/audio.json", model_path)
+      SpeechToText::MozillaDeepspeechS2T.generate_transcript(
+        "#{filepath}/audio.wav",
+        "#{filepath}/audio.json",
+        model_path
+      )
 
       if File.exist?("#{Rails.root}/storage/#{job_id}/audio.json")
         file = File.open("#{Rails.root}/storage/#{job_id}/audio.json", 'r')
