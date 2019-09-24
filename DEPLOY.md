@@ -301,7 +301,52 @@ $user: cat /etc/faktory/password
 #do the same thing for working_dir/service/deepspeech_service.service
 ```
 
+# Copy /usr/local/deepspeech-web/service/<all-files>.service to /etc/systemd/system
+```
+cd /usr/local/deepspeech-web/service/
+sudo cp *.service /etc/systemd/system
+```
 
+# Start all services
+```
+sudo systemctl enable deepspeech_rails
+sudo systemctl start deepspeech_rails
+
+sudo systemctl enable deepspeech_service
+sudo systemctl start deepspeech_service
+
+sudo systemctl enable deepspeech_worker
+sudo systemctl start deepspeech_worker
+```
+
+# Restart/stop services
+```
+sudo systemctl restart service-name
+sudo systemctl stop service-name
+```
+
+# Check status
+```
+sudo systemctl status service-name
+```
+
+# edit service
+```
+sudo systemctl edit service-name --full
+sudo systemctl daemon-reload (After editing)
+sudo journalctl -u service-name.service
+```
+
+# check logs
+```
+sudo journalctl -u service-name.service
+```
+
+# clear logs
+```
+sudo journalctl --rotate
+sudo journalctl --vacuum-time=1s
+```
 
 # Keep your code clean with Rubocop
 1. install rubocop

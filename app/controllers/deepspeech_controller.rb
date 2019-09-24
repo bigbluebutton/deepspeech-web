@@ -55,7 +55,7 @@ class DeepspeechController < ApplicationController
       render json: data
       return
     end
-    data = '{"message" : "File not found. Please check if job_id and status"}'
+    data = '{"message" : "File not found. Please check job_id and status"}'
     if File.exist?("#{Rails.root}/storage/#{job_id}/audio.json")
       file = File.open("#{Rails.root}/storage/#{job_id}/audio.json")
       data = JSON.load file
