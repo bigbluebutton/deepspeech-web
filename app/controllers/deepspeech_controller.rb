@@ -61,6 +61,10 @@ class DeepspeechController < ApplicationController
       data = JSON.load file
     end
     render json: data
+    
+    if Dir.exist?("#{Rails.root}/storage/#{job_id}")
+        system("rm -r #{Rails.root}/storage/#{job_id}")
+    end
   end
 
   private
