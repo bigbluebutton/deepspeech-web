@@ -55,6 +55,7 @@ $user: echo 'export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"' >> ~/.bash
 $user: git clone https://github.com/rbenv/rbenv-vars.git ~/.rbenv/plugins/rbenv-vars
 $user: exec $SHELL
 $user: rbenv install 2.6.3
+sudo chown -R $user.$user ~/.rbenv
 $user: rbenv global 2.6.3
 $user: ruby -v
 #ruby 2.6.3
@@ -230,6 +231,10 @@ $user/deepspeech/temp: sudo tar xvf audio-0.4.1.tar.gz
 $user/deepspeech/temp: ./deepspeech --model models/output_graph.pbmm --alphabet models/alphabet.txt --lm models/lm.binary --trie models/trie --audio audio –e
 ```
 
+9. If you want to update the deepspeech version in future
+```
+pip3 install deepspeech --upgrade
+```
 At this point, you should get words for sample audios inside the temp/audio directory.
 # Redis server
 ```
@@ -281,12 +286,11 @@ $user: redis-cli server
 
 # Install faktory worker
 ```
-#download files from this link https://github.com/contribsys/faktory/releases
-#you will need 2 files.
-#faktory-1.0.1-1.x86_64.rpm & faktory_1.0.1-1_amd64.deb
+sudo wget https://github.com/contribsys/faktory/releases/download/v1.0.1-1/faktory_1.0.1-1_amd64.deb
 
-$user: dpkg -i </file_path/faktory_1.0.1-1_amd64.deb>
-$user: yum install </file_path/faktory-1.0.1-1.x86_64.rpm>
+sudo dpkg -i faktory_1.0.1-1_amd64.deb
+
+sudo cat /etc/faktory/password (Manually find password if ever needed)
 ```
 
 # set password for worker and Service
