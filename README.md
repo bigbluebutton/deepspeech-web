@@ -237,6 +237,8 @@ $user/deepspeech/temp: sudo tar xvf audio-0.4.1.tar.gz
 8. check if deepspeech native is working
 ```
 $user/deepspeech/temp: ./deepspeech --model models/output_graph.pbmm --alphabet models/alphabet.txt --lm models/lm.binary --trie models/trie --audio audio –e
+
+* if you have installed models on the different path then you need to update the setting.yaml file
 ```
 
 9. If you want to update the deepspeech version in future
