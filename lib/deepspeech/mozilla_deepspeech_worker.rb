@@ -26,7 +26,7 @@ module MozillaDeepspeech
       model_path = props['model_path']
       puts model_path
       filepath = "#{Rails.root}/storage/#{job_id}"
-      puts "start transcript for #{job_id}"
+      
       SpeechToText::MozillaDeepspeechS2T.generate_transcript(
         "#{filepath}/audio.wav",
         "#{filepath}/audio.json",
