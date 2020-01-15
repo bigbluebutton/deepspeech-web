@@ -7,6 +7,7 @@ require 'faktory'
 require 'json'
 require 'sqlite3'
 require 'speech_to_text'
+require 'yaml'
 
 rails_environment_path = File.expand_path(
   File.join(__dir__, '..', '..', 'config', 'environment')
@@ -21,9 +22,11 @@ module MozillaDeepspeech
     def perform(job_id) # rubocop:disable Metrics/MethodLength
       status = 'inProgress'
       update_status(job_id, status)
-      model_path = '/home/deepspeech/temp'
+      props = YAML.load_file('settings.yaml')
+      model_path = props['model_path']
+      puts model_path
       filepath = "#{Rails.root}/storage/#{job_id}"
-      puts "start transcript for #{job_id}"
+      
       SpeechToText::MozillaDeepspeechS2T.generate_transcript(
         "#{filepath}/audio.wav",
         "#{filepath}/audio.json",

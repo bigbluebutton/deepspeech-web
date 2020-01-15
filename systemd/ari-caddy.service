@@ -1,0 +1,13 @@
+# deepspeech_rails.service
+[Unit]
+Description=ari-caddy
+[Service]
+Type=simple
+Environment=LANG=en_US.UTF-8
+User=root
+# WorkingDirectory=/home/ubuntu/worker/deepspeech-web
+WorkingDirectory=/home/ari/
+ExecStart=/home/ari/caddy reverse-proxy --from ari-deepspeech.blindside-dev.com --to localhost:3000
+Restart=always
+[Install]
+WantedBy=multi-user.target
