@@ -23,7 +23,7 @@ Then execute any command with sudo to test the user.
 sudo mkdir abc
 ```
 # Installing Ruby
-make sure you are logged in with new sudo user (not as root user)
+Make sure you are logged in with new sudo user (not as root user)
 
 Adding Node.js 10 repository
 ```
@@ -45,7 +45,7 @@ Install our dependencies for compiiling Ruby along with Node.js and Yarn
 $user: sudo apt-get install git-core curl zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev software-properties-common libffi-dev dirmngr gnupg apt-transport-https ca-certificates redis-server redis-tools nodejs yarn
 ```
 
-# install Rbenv
+# Install Rbenv
 ```
 $user: git clone https://github.com/rbenv/rbenv.git ~/.rbenv
 $user: echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
@@ -77,7 +77,7 @@ $user: bundle -v
 #Bundler version 2.0
 ```
 
-install rails
+Install rails
 ```
 $user:gem install rails
 ```
@@ -105,16 +105,19 @@ $ubuntu:sudo chown -R ubuntu:ubuntu /usr/local/deepspeech-web
 
 # Running Rails Application
 Go to rails root directory and execute following commands
-```
-install dependencies
-$user: bundle install
 
-execute migration to create database
+Install dependencies
+```
+$user: bundle install
+```
+
+Execute migration to create database
+```
 $user: rake db:migrate
 ```
 
 # Security
-** create credentials and add apikey
+** Create credentials and add apikey
 ```
 touch credentials.yaml
 
@@ -126,7 +129,7 @@ sudo nano credentials.yaml (refer example-credentails.yaml in the working dir)
 You can use port_number = 3000 or 4000
 
 # Install Mozilla deepspeech
-1. install dependencies
+1. Install dependencies
 ```
 $user: sudo apt-get install build-essential
 $user: sudo apt-get install aptitude
@@ -149,8 +152,9 @@ $user: export PYTHON_BIN_PATH="/usr/bin/python3.6"
 
 3. Install Bazel and update PATH variable
 3.1 Download Bazel 0.15 compatible to tensorflow 1.12.0
+ 
+ Create installation dir called deepspeech
 ```
-#create installation dir called deepspeech
 $user: sudo mkdir deepspeech
 $user: cd deepspeech
 $user/deepspeech: sudo mkdir temp
@@ -234,7 +238,7 @@ $user/deepspeech/temp: sudo wget https://github.com/mozilla/DeepSpeech/releases/
 $user/deepspeech/temp: sudo tar xvf audio-0.4.1.tar.gz
 ```
 
-8. check if deepspeech native is working
+8. Check if deepspeech native is working
 ```
 $user/deepspeech/temp: ./deepspeech --model models/output_graph.pbmm --alphabet models/alphabet.txt --lm models/lm.binary --trie models/trie --audio audio –e
 
@@ -303,17 +307,18 @@ sudo dpkg -i faktory_1.0.1-1_amd64.deb
 sudo cat /etc/faktory/password (Manually find password if ever needed)
 ```
 
-# set password for worker and Service
-```
-#find password
-$user: cat /etc/faktory/password
+# Set password for worker and Service
 
-#set password
-#open working_dir/service/deepspeech_worker.service and find this line given below.
-#Environment=LANG=en_US.UTF-8 FAKTORY_PROVIDER=FAKTORY_URL FAKTORY_URL=tcp://:<password>@localhost:7419
-#replace your pasword with <password> . save & exit
-#do the same thing for working_dir/service/deepspeech_service.service
+Find password
 ```
+$user: cat /etc/faktory/password
+```
+# Set password
+Open working_dir/service/deepspeech_worker.service and find this line given below.
+Environment=LANG=en_US.UTF-8 FAKTORY_PROVIDER=FAKTORY_URL FAKTORY_URL=tcp://:<password>@localhost:7419
+Replace your pasword with <password> . save & exit
+Do the same thing for working_dir/service/deepspeech_service.service
+
 
 # Copy /usr/local/deepspeech-web/service/<all-files>.service to /etc/systemd/system
 ```
@@ -344,26 +349,26 @@ sudo systemctl stop service-name
 sudo systemctl status service-name
 ```
 
-# edit service
+# Edit service
 ```
 sudo systemctl edit service-name --full
 sudo systemctl daemon-reload (After editing)
 sudo journalctl -u service-name.service
 ```
 
-# check logs
+# Check logs
 ```
 sudo journalctl -u service-name.service
 ```
 
-# clear logs
+# Clear logs
 ```
 sudo journalctl --rotate
 sudo journalctl --vacuum-time=1s
 ```
 
 # Keep your code clean with Rubocop
-1. install rubocop
+1. Install rubocop
 ```
 $user: gem install rubocop
 ```
