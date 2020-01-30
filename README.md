@@ -6,17 +6,17 @@ ssh root@<server ip>
 
 STEP 2. Use the adduser command to add a new user to your system and set the password for the user
 ```
-adduser <username>
+adduser texttrack
 ```
 
 STEP 3. Use the usermod command to add the user to the sudo group.
 ```
-usermod -aG sudo <username>
+usermod -aG sudo texttrack
 ```
 
 STEP 4. Test sudo access on new user account. Use the su command to switch to the new user account.
 ```
-su <username> or su - <username>
+su texttrack or su - texttrack
 ```
 Then execute any command with sudo to test the user.
 ```
@@ -32,54 +32,54 @@ $user: curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
 
 Adding Yarn repository
 ```
-$user: curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-$user: echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-$user: sudo add-apt-repository ppa:chris-lea/redis-server
+curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+sudo add-apt-repository ppa:chris-lea/redis-server
 ```
 Refresh packege
 ```
-$user: sudo apt-get update
+sudo apt-get update
 ```
 Install our dependencies for compiiling Ruby along with Node.js and Yarn
 ```
-$user: sudo apt-get install git-core curl zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev software-properties-common libffi-dev dirmngr gnupg apt-transport-https ca-certificates redis-server redis-tools nodejs yarn
+sudo apt-get install git-core curl zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev software-properties-common libffi-dev dirmngr gnupg apt-transport-https ca-certificates redis-server redis-tools nodejs yarn
 ```
 
 # Install Rbenv
 ```
-$user: git clone https://github.com/rbenv/rbenv.git ~/.rbenv
-$user: echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
-$user: echo 'eval "$(rbenv init -)"' >> ~/.bashrc
-$user: git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
-$user: echo 'export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"' >> ~/.bashrc
-$user: git clone https://github.com/rbenv/rbenv-vars.git ~/.rbenv/plugins/rbenv-vars
-$user: exec $SHELL
-$user: rbenv install 2.6.3
-sudo chown -R $user.$user ~/.rbenv
-$user: rbenv global 2.6.3
-$user: ruby -v
+git clone https://github.com/rbenv/rbenv.git ~/.rbenv
+echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
+echo 'eval "$(rbenv init -)"' >> ~/.bashrc
+git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
+echo 'export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"' >> ~/.bashrc
+git clone https://github.com/rbenv/rbenv-vars.git ~/.rbenv/plugins/rbenv-vars
+exec $SHELL
+rbenv install 2.6.3
+sudo chown -R texttrack.texttrack ~/.rbenv
+rbenv global 2.6.3
+ruby -v
 #ruby 2.6.3
 ```
 
 This installs the latest Bundler, currently 2.x.
 ```
-$user: gem install bundler
+gem install bundler
 ```
 
 For older apps that require Bundler 1.x, you can install it as well.
 ```
-$user: gem install bundler -v 1.17.3
+gem install bundler -v 1.17.3
 ```
 
 Test and make sure bundler is installed correctly, you should see a version number.
 ```
-$user: bundle -v
+bundle -v
 #Bundler version 2.0
 ```
 
 Install rails
 ```
-$user:gem install rails
+gem install rails
 ```
 
 # Some errors and solutions.
@@ -108,12 +108,12 @@ Go to rails root directory and execute following commands
 
 Install dependencies
 ```
-$user: bundle install
+bundle install
 ```
 
 Execute migration to create database
 ```
-$user: rake db:migrate
+rake db:migrate
 ```
 
 # Security
@@ -131,23 +131,23 @@ You can use port_number = 3000 or 4000
 # Install Mozilla deepspeech
 1. Install dependencies
 ```
-$user: sudo apt-get install build-essential
-$user: sudo apt-get install aptitude
-$user: sudo apt-get install libstdc++6
-$user: sudo apt-get install libsox-dev
-$user: cd /usr/lib/x86_64-linux-gnu
-$user: sudo ln -s libsox.so.3 libsox.so.2
-$user: export PATH="$PATH:/usr/lib/x86_64-linux-gnu"
+sudo apt-get install build-essential
+sudo apt-get install aptitude
+sudo apt-get install libstdc++6
+sudo apt-get install libsox-dev
+cd /usr/lib/x86_64-linux-gnu
+sudo ln -s libsox.so.3 libsox.so.2
+export PATH="$PATH:/usr/lib/x86_64-linux-gnu"
 ```
 
 2. Install Python
 ```
-$user: sudo apt-get install python3-dev
+sudo apt-get install python3-dev
 
 #other dependencies
-$user: sudo apt-get install pkg-config zip g++ zlib1g-dev unzip wget
-$user: export PYTHON_INCLUDE_PATH="/usr/include/python3.6m"
-$user: export PYTHON_BIN_PATH="/usr/bin/python3.6"
+sudo apt-get install pkg-config zip g++ zlib1g-dev unzip wget
+export PYTHON_INCLUDE_PATH="/usr/include/python3.6m"
+export PYTHON_BIN_PATH="/usr/bin/python3.6"
 ```
 
 3. Install Bazel and update PATH variable
@@ -155,17 +155,17 @@ $user: export PYTHON_BIN_PATH="/usr/bin/python3.6"
  
  Create installation dir called deepspeech
 ```
-$user: sudo mkdir deepspeech
-$user: cd deepspeech
-$user/deepspeech: sudo mkdir temp
-$user/deepspeech: sudo apt-get install wget
-$user/deepspeech: sudo wget https://github.com/bazelbuild/bazel/releases/download/0.15.0/bazel-0.15.0-installer-linux-x86_64.sh
+sudo mkdir deepspeech
+cd deepspeech
+sudo mkdir temp
+sudo apt-get install wget
+sudo wget https://github.com/bazelbuild/bazel/releases/download/0.15.0/bazel-0.15.0-installer-linux-x86_64.sh
 ```
 
 3.2 Run the Bazel installer
 ```
-$user/deepspeech: sudo chmod +x bazel-0.15.0-installer-linux-x86_64.sh
-$user/deepspeech: sudo ./bazel-0.15.0-installer-linux-x86_64.sh –-user --bin=$HOME/bin
+sudo chmod +x bazel-0.15.0-installer-linux-x86_64.sh
+sudo ./bazel-0.15.0-installer-linux-x86_64.sh –-user --bin=$HOME/bin
 
 #if you get an error in above command then remove user flag
 $user/deepspeech: sudo ./bazel-0.15.0-installer-linux-x86_64.sh
@@ -183,77 +183,78 @@ export PATH="$PATH:$HOME/bin"
 4. Build deepspeech native
 4.1 DeepSpeech clone and checkout
 ```
-$user/deepspeech: sudo apt-get install git
-$user/deepspeech: sudo git clone https://github.com/dabinat/DeepSpeech.git
-$user/deepspeech/Deepspeech: cd DeepSpeech/
-$user/deepspeech/Deepspeech: sudo git checkout timing-info
-$user/deepspeech/Deepspeech: cd ..
+sudo apt-get install git
+sudo git clone https://github.com/dabinat/DeepSpeech.git
+cd DeepSpeech/
+sudo git checkout timing-info
+cd ..
 ```
 
 4.2 Tensorflow clone and checkout
 ```
-$user/deepspeech: sudo git clone https://github.com/mozilla/tensorflow.git
-$user/deepspeech: cd tensorflow/
-$user/deepspeech/tensorflow: sudo git checkout origin/r1.12
+sudo git clone https://github.com/mozilla/tensorflow.git
+cd tensorflow/
+sudo git checkout origin/r1.12
 ```
 4.3 create a symbolic link to the DeepSpeech native_client directory.
 ```
-$user/deepspeech/tensorflow: sudo ln -s ../DeepSpeech/native_client ./
+sudo ln -s ../DeepSpeech/native_client ./
 ```
 
 5. Build DeepSpeech
 5.1 make sure you have a python
 ```
-$user/deepspeech/tensorflow: sudo apt-get install python
+sudo apt-get install python
 ```
 
 5.2 execute build command and have a cup of tea because usually it takes 20-25 mins to build. However, time is depending on server  configurations
 ```
-$user/deepspeech/tensorflow: sudo bazel build --config=monolithic -c opt --copt=-O3 --copt="-D_GLIBCXX_USE_CXX11_ABI=0" --copt=-fvisibility=hidden //native_client:libdeepspeech.so //native_client:generate_trie
+sudo bazel build --config=monolithic -c opt --copt=-O3 --copt="-D_GLIBCXX_USE_CXX11_ABI=0" --copt=-fvisibility=hidden //native_client:libdeepspeech.so //native_client:generate_trie
 ```
 
 5.3 set environment variable
 ```
-$user/deepspeech/tensorflow: export TFDIR=~/workspace/tensorflow
+export TFDIR=~/workspace/tensorflow
 ```
 
 5.4 make sure you have deepspeech file in your DeepSpeech dir and tensaflow dir. If file exist in both dir then execute following command.
 ```
-$user/deepspeech/tensorflow: cd ../DeepSpeech/native_client
-$user: ~deepspeech//DeepSpeech/native_client: make deepspeech
+cd ../DeepSpeech/native_client
+~deepspeech//DeepSpeech/native_client: make deepspeech
 ```
 
 6. Copy binaries into deepspeech/temp folder
 ```
-$user/deepspeech/DeepSpeech/native_client: cp deepspeech ~/deepspeech/temp/deepspeech
-$user/deepspeech/DeepSpeech/native_client: cp ~/deepspeech/tensorflow/bazel-bin/native_client/libdeepspeech.so ~/deepspeech/temp/libdeepspeech.so
-$user/deepspeech/DeepSpeech/native_client: cd ~/deepspeech/temp
+cp deepspeech ~/deepspeech/temp/deepspeech
+cp ~/deepspeech/tensorflow/bazel-bin/native_client/libdeepspeech.so ~/deepspeech/temp/libdeepspeech.so
+cd ~/deepspeech/temp
 ```
 
 7. Download model and audio files
 ```
-$user/deepspeech/temp: sudo wget https://github.com/mozilla/DeepSpeech/releases/download/v0.4.1/deepspeech-0.4.1-models.tar.gz
-$user/deepspeech/temp: sudo tar xvf deepspeech-0.4.1-models.tar.gz
-$user/deepspeech/temp: sudo wget https://github.com/mozilla/DeepSpeech/releases/download/v0.4.1/audio-0.4.1.tar.gz
-$user/deepspeech/temp: sudo tar xvf audio-0.4.1.tar.gz
+sudo curl -LO https://github.com/mozilla/DeepSpeech/releases/download/v0.6.1/deepspeech-0.6.1-models.tar.gz
+sudo tar xvf deepspeech-0.6.1-models.tar.gz
+sudo curl -LO https://github.com/mozilla/DeepSpeech/releases/download/v0.6.1/audio-0.6.1.tar.gz
+sudo tar xvf audio-0.6.1.tar.gz
 ```
 
 8. Check if deepspeech native is working
 ```
-$user/deepspeech/temp: ./deepspeech --model models/output_graph.pbmm --alphabet models/alphabet.txt --lm models/lm.binary --trie models/trie --audio audio –e
+deepspeech --model deepspeech-0.6.1-models/output_graph.pbmm --lm deepspeech-0.6.1-models/lm.binary --trie deepspeech-0.6.1-models/trie --audio audio/2830-3980-0043.wav
 
 * if you have installed models on the different path then you need to update the setting.yaml file
 ```
 
-9. If you want to update the deepspeech version in future
+9. If you want to update the deepspeech version in future (depending on if you want to use the gpu or not - only install 1)
 ```
-pip3 install deepspeech --upgrade
+pip install deepspeech==0.6.1
+pip install deepspeech-gpu==0.6.1
 ```
 At this point, you should get words for sample audios inside the temp/audio directory.
 # Redis server
 ```
-$user: sudo apt-get update
-$user: sudo apt-get upgrade
+sudo apt-get update
+sudo apt-get upgrade
 ```
 
 1. Install & enable Redis server
@@ -264,7 +265,7 @@ sudo systemctl enable redis-server.service
 
 2. Configure redis server
 ```
-$user: sudo vim /etc/redis/redis.conf
+sudo vim /etc/redis/redis.conf
 #you can use nano instead of vim
 #copy following lines or find and remove comments for these lines
 maxmemory 256mb
@@ -274,28 +275,28 @@ maxmemory-policy allkeys-lru
 
 3. Restart service
 ```
-$user: sudo systemctl restart redis-server.service
+sudo systemctl restart redis-server.service
 ```
 
 4. Install redis php extension
 ```
-$user: sudo apt-get install php-redis
+sudo apt-get install php-redis
 ```
 
 5. Test the connection
 ```
-$user: redis-cli ping
+redis-cli ping
 #you should get response "PONG"
 ```
 
 6. Important commands
 ```
 #restart redis server
-$user: sudo systemctl restart redis
+sudo systemctl restart redis
 #redis-cli commands
-$user: redis-cli info
-$user: redis-cli stats
-$user: redis-cli server
+redis-cli info
+redis-cli stats
+redis-cli server
 ```
 
 # Install faktory worker
@@ -311,7 +312,7 @@ sudo cat /etc/faktory/password (Manually find password if ever needed)
 
 Find password
 ```
-$user: cat /etc/faktory/password
+cat /etc/faktory/password
 ```
 # Set password
 Open working_dir/service/deepspeech_worker.service and find this line given below.
@@ -370,14 +371,14 @@ sudo journalctl --vacuum-time=1s
 # Keep your code clean with Rubocop
 1. Install rubocop
 ```
-$user: gem install rubocop
+gem install rubocop
 ```
 2. Run rubocop to find coding offences
 ```
-$user: cd <working_dir>
-$user/working_dir: rubocop
+cd <working_dir>
+rubocop
 ```
 3. Safe auto corrections
 ```
-$user/working_dir: rubocop --safe-auto-correct --disable-uncorrectable
+rubocop --safe-auto-correct --disable-uncorrectable
 ```
