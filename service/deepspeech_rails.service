@@ -7,7 +7,7 @@ Environment=LANG=en_US.UTF-8
 User=ubuntu
 # WorkingDirectory=/home/ubuntu/worker/deepspeech-web
 WorkingDirectory=/usr/local/worker/deepspeech-web
-ExecStart=/home/ubuntu/.rbenv/shims/bundle exec rails s -e development -p 3000
+ExecStart=/home/ubuntu/.rbenv/shims/bundle exec rails s -b 0.0.0.0 -e development -p 3000
 Restart=always
 [Install]
 WantedBy=multi-user.target
