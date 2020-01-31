@@ -27,15 +27,11 @@ module MozillaDeepspeech
       puts model_path
       filepath = "#{Rails.root}/storage/#{job_id}"
       
-      #SpeechToText::MozillaDeepspeechS2T.generate_transcript(
-      #  "#{filepath}/audio.wav",
-      #  "#{filepath}/audio.json",
-      #  model_path
-      #)
-
-      generate_transcript("#{filepath}/audio.wav",
-                          "#{filepath}/audio.json",
-                          model_path)
+      SpeechToText::MozillaDeepspeechS2T.generate_transcript(
+        "#{filepath}/audio.wav",
+        "#{filepath}/audio.json",
+        model_path
+      )
 
       if File.exist?("#{Rails.root}/storage/#{job_id}/audio.json")
         file = File.open("#{Rails.root}/storage/#{job_id}/audio.json", 'r')
@@ -49,24 +45,6 @@ module MozillaDeepspeech
         status = 'failed'
       end
       update_status(job_id, status)
-    end
-
-    def generate_transcript(audio, json_file, model_path)
-      #deepspeech_command = "#{model_path}/deepspeech --model #{model_path}/models/output_graph.pbmm --alphabet #{model_path}/models/alphabet.txt --lm #{model_path}/models/lm.binary --trie #{model_path}/models/trie -e --audio #{audio} > #{json_file}"
-      deepspeech_command = "deepspeech --json --model #{model_path}/deepspeech-0.6.1-models/output_graph.pbmm --lm #{model_path}/deepspeech-0.6.1-models/lm.binary --trie #{model_path}/deepspeech-0.6.1-models/trie --audio #{audio} > #{json_file}"
-      Open3.popen2e(deepspeech_command) do |stdin, stdout_err, wait_thr|
-        while line = stdout_err.gets
-          puts "#{line}"
-        end
-
-        exit_status = wait_thr.value
-        unless exit_status.success?
-          puts '---------------------'
-          puts "FAILED to execute --> #{deepspeech_command}"
-          puts '---------------------'
-        end
-      end
-
     end
 
     def update_status(job_id, status)
