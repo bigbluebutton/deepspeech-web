@@ -85,7 +85,7 @@ gem install rails
 # Some errors and solutions.
 for example,
 Rails application : deepspeech-web  (rails root dir)
-sudo user : ubuntu
+sudo user : texttrack
 
 ```
 Error: if you get error related .ruby-version file
@@ -238,18 +238,31 @@ sudo curl -LO https://github.com/mozilla/DeepSpeech/releases/download/v0.6.1/aud
 sudo tar xvf audio-0.6.1.tar.gz
 ```
 
-8. Check if deepspeech native is working
-```
-deepspeech --model deepspeech-0.6.1-models/output_graph.pbmm --lm deepspeech-0.6.1-models/lm.binary --trie deepspeech-0.6.1-models/trie --audio audio/2830-3980-0043.wav
-
-* if you have installed models on the different path then you need to update the setting.yaml file
-```
-
-9. If you want to update the deepspeech version in future (depending on if you want to use the gpu or not - only install 1)
+8. If you want to update the deepspeech version in future (depending on if you want to use the gpu or not - only install 1)
 ```
 pip install deepspeech==0.6.1
 pip install deepspeech-gpu==0.6.1
 ```
+
+Now we need to replace our old deepspeech with the new one in `home/deepspeech/temp`
+```
+cd /home/deepspeech/temp
+sudo mv deepspeech deepspeech_old
+which deepspeech
+```
+which deepspeech will give you the link to where the new one is located (now to copy that to `/home/deepspeech/temp`)
+```
+sudo cp /home/texttrack/.local/bin/deepspeech /home/deepspeech/temp
+```
+
+9. Check if deepspeech native is working
+```
+cd /home/deepspeech/temp
+./deepspeech --model deepspeech-0.6.1-models/output_graph.pbmm --lm deepspeech-0.6.1-models/lm.binary --trie deepspeech-0.6.1-models/trie --audio audio/2830-3980-0043.wav
+
+* if you have installed models on the different path then you need to update the setting.yaml file
+```
+
 At this point, you should get words for sample audios inside the temp/audio directory.
 # Redis server
 ```
@@ -316,9 +329,9 @@ cat /etc/faktory/password
 ```
 # Set password
 Open working_dir/service/deepspeech_worker.service and find this line given below.
-Environment=LANG=en_US.UTF-8 FAKTORY_PROVIDER=FAKTORY_URL FAKTORY_URL=tcp://:<password>@localhost:7419
+`Environment=LANG=en_US.UTF-8 FAKTORY_PROVIDER=FAKTORY_URL FAKTORY_URL=tcp://:<password>@localhost:7419`
 Replace your pasword with <password> . save & exit
-Do the same thing for working_dir/service/deepspeech_service.service
+Do the same thing for `working_dir/service/deepspeech_service.service`
 
 
 # Copy /usr/local/deepspeech-web/service/<all-files>.service to /etc/systemd/system

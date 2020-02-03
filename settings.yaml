@@ -11,4 +11,4 @@ log_to_file: false
 #
 redis_list_namespace: "bbb_texttrack_service"
 redis_jobs_transcript: "bbb_texttrack_service:transcript"
-model_path: "/home/deepspeech/temp"
+model_path: "/home/speech/deepspeech/temp"
