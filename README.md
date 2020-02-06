@@ -27,7 +27,7 @@ Make sure you are logged in with new sudo user (not as root user)
 
 Adding Node.js 10 repository
 ```
-$user: curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
 ```
 
 Adding Yarn repository
@@ -97,10 +97,10 @@ solution: open your Gemfile and change the Gemfile version to 2.6.3
 Error: There was an error while trying to write to `<path-to-rails-app>/deepspeech-web/Gemfile.lock`. It is likely that you need to grant write permissions for that path.
 
 solution
-$ubuntu:sudo chown -R <user>:<user> path-to-rails_root
+sudo chown -R <user>:<user> path-to-rails_root
 
 Example:
-$ubuntu:sudo chown -R ubuntu:ubuntu /usr/local/deepspeech-web
+sudo chown -R texttrack:texttrack /usr/local/deepspeech-web
 ```
 
 # Running Rails Application
@@ -220,7 +220,7 @@ export TFDIR=~/workspace/tensorflow
 5.4 make sure you have deepspeech file in your DeepSpeech dir and tensaflow dir. If file exist in both dir then execute following command.
 ```
 cd ../DeepSpeech/native_client
-~deepspeech//DeepSpeech/native_client: make deepspeech
+make deepspeech
 ```
 
 6. Copy binaries into deepspeech/temp folder
@@ -238,10 +238,13 @@ sudo curl -LO https://github.com/mozilla/DeepSpeech/releases/download/v0.6.1/aud
 sudo tar xvf audio-0.6.1.tar.gz
 ```
 
-8. If you want to update the deepspeech version in future (depending on if you want to use the gpu or not - only install 1)
+8. If you want to update the deepspeech version in future (depending on if you want to use the gpu or not - only install 1 `both pip & pip3`)
 ```
 pip install deepspeech==0.6.1
+pip3 install deepspeech==0.6.1
+
 pip install deepspeech-gpu==0.6.1
+pip3 install deepspeech-gpu==0.6.1
 ```
 
 Now we need to replace our old deepspeech with the new one in `home/deepspeech/temp`
