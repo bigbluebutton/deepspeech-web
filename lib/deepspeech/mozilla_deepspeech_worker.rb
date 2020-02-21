@@ -17,7 +17,7 @@ require rails_environment_path
 module MozillaDeepspeech
   class TranscriptWorker # rubocop:disable Style/Documentation
     include Faktory::Job
-    faktory_options retry: 2, concurrency: 5
+    faktory_options retry: 2, concurrency: 1
 
     def perform(job_id) # rubocop:disable Metrics/MethodLength
       status = 'inProgress'
