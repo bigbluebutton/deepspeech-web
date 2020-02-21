@@ -27,7 +27,7 @@ Make sure you are logged in with new sudo user (not as root user)
 
 Adding Node.js 10 repository
 ```
-$user: curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
 ```
 
 Adding Yarn repository
@@ -85,7 +85,7 @@ gem install rails
 # Some errors and solutions.
 for example,
 Rails application : deepspeech-web  (rails root dir)
-sudo user : ubuntu
+sudo user : texttrack
 
 ```
 Error: if you get error related .ruby-version file
@@ -97,10 +97,10 @@ solution: open your Gemfile and change the Gemfile version to 2.6.3
 Error: There was an error while trying to write to `<path-to-rails-app>/deepspeech-web/Gemfile.lock`. It is likely that you need to grant write permissions for that path.
 
 solution
-$ubuntu:sudo chown -R <user>:<user> path-to-rails_root
+sudo chown -R <user>:<user> path-to-rails_root
 
 Example:
-$ubuntu:sudo chown -R ubuntu:ubuntu /usr/local/deepspeech-web
+sudo chown -R texttrack:texttrack /usr/local/deepspeech-web
 ```
 
 # Running Rails Application
@@ -220,7 +220,7 @@ export TFDIR=~/workspace/tensorflow
 5.4 make sure you have deepspeech file in your DeepSpeech dir and tensaflow dir. If file exist in both dir then execute following command.
 ```
 cd ../DeepSpeech/native_client
-~deepspeech//DeepSpeech/native_client: make deepspeech
+make deepspeech
 ```
 
 6. Copy binaries into deepspeech/temp folder
@@ -238,18 +238,41 @@ sudo curl -LO https://github.com/mozilla/DeepSpeech/releases/download/v0.6.1/aud
 sudo tar xvf audio-0.6.1.tar.gz
 ```
 
-8. Check if deepspeech native is working
+8. If you want to update the deepspeech version in future (depending on if you want to use the gpu or not - only install 1 `both pip & pip3`)
 ```
-deepspeech --model deepspeech-0.6.1-models/output_graph.pbmm --lm deepspeech-0.6.1-models/lm.binary --trie deepspeech-0.6.1-models/trie --audio audio/2830-3980-0043.wav
+pip install deepspeech==0.6.1
+pip3 install deepspeech==0.6.1
+```
+
+For deepspeech-gpu(currently only works with nvidia gpus)
+Install cuda 10 dependencies at (https://www.tensorflow.org/install/gpu)
+Then follow commands below to get tensorflow-gpu & deepspeech-gpu
+```
+pip install tensorflow-gpu
+pip install deepspeech-gpu==0.6.1
+pip3 install deepspeech-gpu==0.6.1
+```
+To check the load on the gpu at any point `nvidia-smi` should work in the terminal.
+
+Now we need to replace our old deepspeech with the new one in `home/deepspeech/temp`
+```
+cd /home/deepspeech/temp
+sudo mv deepspeech deepspeech_old
+which deepspeech
+```
+which deepspeech will give you the link to where the new one is located (now to copy that to `/home/deepspeech/temp`)
+```
+sudo cp /home/texttrack/.local/bin/deepspeech /home/deepspeech/temp
+```
+
+9. Check if deepspeech native is working
+```
+cd /home/deepspeech/temp
+./deepspeech --model deepspeech-0.6.1-models/output_graph.pbmm --lm deepspeech-0.6.1-models/lm.binary --trie deepspeech-0.6.1-models/trie --audio audio/2830-3980-0043.wav
 
 * if you have installed models on the different path then you need to update the setting.yaml file
 ```
 
-9. If you want to update the deepspeech version in future (depending on if you want to use the gpu or not - only install 1)
-```
-pip install deepspeech==0.6.1
-pip install deepspeech-gpu==0.6.1
-```
 At this point, you should get words for sample audios inside the temp/audio directory.
 # Redis server
 ```
@@ -316,9 +339,9 @@ cat /etc/faktory/password
 ```
 # Set password
 Open working_dir/service/deepspeech_worker.service and find this line given below.
-Environment=LANG=en_US.UTF-8 FAKTORY_PROVIDER=FAKTORY_URL FAKTORY_URL=tcp://:<password>@localhost:7419
+`Environment=LANG=en_US.UTF-8 FAKTORY_PROVIDER=FAKTORY_URL FAKTORY_URL=tcp://:<password>@localhost:7419`
 Replace your pasword with <password> . save & exit
-Do the same thing for working_dir/service/deepspeech_service.service
+Do the same thing for `working_dir/service/deepspeech_service.service`
 
 
 # Copy /usr/local/deepspeech-web/service/<all-files>.service to /etc/systemd/system
