@@ -242,10 +242,17 @@ sudo tar xvf audio-0.6.1.tar.gz
 ```
 pip install deepspeech==0.6.1
 pip3 install deepspeech==0.6.1
+```
 
+For deepspeech-gpu(currently only works with nvidia gpus)
+Install cuda 10 dependencies at (https://www.tensorflow.org/install/gpu)
+Then follow commands below to get tensorflow-gpu & deepspeech-gpu
+```
+pip install tensorflow-gpu
 pip install deepspeech-gpu==0.6.1
 pip3 install deepspeech-gpu==0.6.1
 ```
+To check the load on the gpu at any point `nvidia-smi` should work in the terminal.
 
 Now we need to replace our old deepspeech with the new one in `home/deepspeech/temp`
 ```
