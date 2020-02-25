@@ -27,7 +27,7 @@ loop do
   job_entry = JSON.parse(data)
   puts "job_entry...#{job_entry['job_id']}"
   
-  #jobs = ''
+  jobs = ''
   while true
       ActiveRecord::Base.connection_pool.with_connection do
         jobs = JobStatus.where("status = 'inProgress'")
