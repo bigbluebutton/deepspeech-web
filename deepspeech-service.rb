@@ -31,7 +31,9 @@ loop do
   while true
       ActiveRecord::Base.connection_pool.with_connection do
         jobs = JobStatus.where("status = 'inProgress'")
-        puts jobs
+        jobs.each do |job|
+            puts "#{job.job_id} has a status of #{job.status}"
+        end
       end
 
 
