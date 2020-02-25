@@ -21,6 +21,13 @@ JOB_KEY = props['redis_jobs_transcript']
 num_entries = redis.llen(JOB_KEY)
 puts "num_entries = #{num_entries}"
 
+ActiveRecord::Base.connection_pool.with_connection do
+  failed = JobStatus.where("status = 'inProgress' or status = 'pending'")
+  failed.each { |f| f.update(status: 'failed')}
+  end
+end
+
+
 loop do
   # for i in 1..num_entries do
   _job_list, data = redis.blpop(JOB_KEY)
@@ -29,13 +36,13 @@ loop do
   
   jobs = ''
   while true
-    puts "inside while"
+    puts "waiting for job #{job_entry['job_id']}"
       ActiveRecord::Base.connection_pool.with_connection do
         jobs = JobStatus.where("status = 'inProgress'")
       end
 
       if jobs[0].nil?
-        puts "starting transcript worker "
+        puts "starting transcript worker for #{job_entry['job_id']}"
         break
       end
       sleep(5)
