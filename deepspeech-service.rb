@@ -34,9 +34,8 @@ loop do
         jobs = JobStatus.where("status = 'inProgress'")
       end
 
-
       if jobs[0].nil?
-        puts "starting transcript worker now with record id: #{jobs.id}"
+        puts "starting transcript worker "
         break
       end
       sleep(5)
