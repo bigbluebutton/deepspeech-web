@@ -1,6 +1,13 @@
 # frozen_string_literal: true
 
 require './lib/deepspeech'
+require 'connection_pool'
+require 'sqlite3'
+
+rails_environment_path = File.expand_path(
+  File.join(__dir__, '..', '..', 'config', 'environment')
+)
+require rails_environment_path
 
 props = YAML.load_file('settings.yaml')
 
@@ -19,5 +26,20 @@ loop do
   _job_list, data = redis.blpop(JOB_KEY)
   job_entry = JSON.parse(data)
   puts "job_entry...#{job_entry['job_id']}"
-  MozillaDeepspeech::TranscriptWorker.perform_async(job_entry['job_id'])
+  ActiveRecord::Base.connection_pool.with_connection do
+      #jobs = ''
+      while true
+          jobs = Caption.where("status = 'inProgress'")
+      
+      
+          if jobs.nil?
+            MozillaDeepspeech::TranscriptWorker.perform_async(job_entry['job_id'])
+            break
+
+          end
+      end
+      
+  end
+    
+  
 end
