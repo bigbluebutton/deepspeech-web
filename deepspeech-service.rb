@@ -3,7 +3,6 @@
 require './lib/deepspeech'
 require 'connection_pool'
 require 'sqlite3'
-require 'active-record'
 
 rails_environment_path = File.expand_path(
   File.join(__dir__, 'config', 'environment')
@@ -31,7 +30,8 @@ loop do
   #jobs = ''
   while true
       ActiveRecord::Base.connection_pool.with_connection do
-        jobs = Caption.where("status = 'inProgress'")
+        jobs = JobStatus.where("status = 'inProgress'")
+        puts jobs
       end
 
 
