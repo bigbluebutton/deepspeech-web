@@ -29,22 +29,20 @@ loop do
   
   jobs = ''
   while true
+    puts "inside while"
       ActiveRecord::Base.connection_pool.with_connection do
         jobs = JobStatus.where("status = 'inProgress'")
-        jobs.each do |job|
-            puts "#{job.job_id} has a status of #{job.status}"
-        end
       end
 
 
       if jobs[0].nil?
         puts "starting transcript worker now with record id: #{jobs.id}"
-        MozillaDeepspeech::TranscriptWorker.perform_async(job_entry['job_id'])
         break
-
       end
-
       sleep(5)
   end
-
+  puts "out of while loop"
+  MozillaDeepspeech::TranscriptWorker.perform_async(job_entry['job_id'])
 end
+
+puts "out of all loop"
