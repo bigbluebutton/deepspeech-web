@@ -36,7 +36,7 @@ loop do
 
 
       if jobs.nil?
-        puts "starting transcript worker now"
+        puts "starting transcript worker now with record id: #{jobs.id}"
         MozillaDeepspeech::TranscriptWorker.perform_async(job_entry['job_id'])
         break
 
