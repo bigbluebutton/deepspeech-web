@@ -21,34 +21,13 @@ JOB_KEY = props['redis_jobs_transcript']
 num_entries = redis.llen(JOB_KEY)
 puts "num_entries = #{num_entries}"
 
-ActiveRecord::Base.connection_pool.with_connection do
-  failed = JobStatus.where("status = 'inProgress' or status = 'pending'")
-  failed.each { |f| f.update(status: 'failed')}
-  end
-end
-
 
 loop do
   # for i in 1..num_entries do
   _job_list, data = redis.blpop(JOB_KEY)
   job_entry = JSON.parse(data)
   puts "job_entry...#{job_entry['job_id']}"
-  
-  jobs = ''
-  while true
-    puts "waiting for job #{job_entry['job_id']}"
-      ActiveRecord::Base.connection_pool.with_connection do
-        jobs = JobStatus.where("status = 'inProgress'")
-      end
-
-      if jobs[0].nil?
-        puts "starting transcript worker for #{job_entry['job_id']}"
-        break
-      end
-      sleep(5)
-  end
-  puts "out of while loop"
-  MozillaDeepspeech::TranscriptWorker.perform_async(job_entry['job_id'])
+  MozillaDeepspeech::TranscriptWorker.perform(job_entry['job_id'])
 end
 
 puts "out of all loop"
