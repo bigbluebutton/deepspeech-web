@@ -3,9 +3,10 @@
 require './lib/deepspeech'
 require 'connection_pool'
 require 'sqlite3'
+require 'active-record'
 
 rails_environment_path = File.expand_path(
-  File.join(__dir__, '..', '..', 'config', 'environment')
+  File.join(__dir__, 'config', 'environment')
 )
 require rails_environment_path
 
@@ -35,6 +36,7 @@ loop do
 
 
       if jobs.nil?
+        puts "starting transcript worker now"
         MozillaDeepspeech::TranscriptWorker.perform_async(job_entry['job_id'])
         break
 
