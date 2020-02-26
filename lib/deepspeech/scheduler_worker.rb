@@ -1,9 +1,17 @@
 # frozen_string_literal: true
 
 require 'faktory_worker_ruby'
+require 'connection_pool'
 require 'faktory'
 require 'speech_to_text'
+require 'json'
+require 'sqlite3'
 require 'yaml'
+
+rails_environment_path = File.expand_path(
+  File.join(__dir__, '..', '..', 'config', 'environment')
+)
+require rails_environment_path
 
 module MozillaDeepspeech
   class SchedulerWorker # rubocop:disable Style/Documentation
