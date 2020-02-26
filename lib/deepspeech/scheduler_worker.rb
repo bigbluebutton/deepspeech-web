@@ -21,7 +21,7 @@ module MozillaDeepspeech
 
     def perform() # rubocop:disable Metrics/MethodLength
     
-      props = YAML.load_file('settings.yaml')  
+      props = YAML.load_file('../../settings.yaml')  
       
       redis = if ENV['REDIS_URL'].nil?
         Redis.new
