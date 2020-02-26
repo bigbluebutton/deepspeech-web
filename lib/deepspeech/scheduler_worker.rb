@@ -2,6 +2,7 @@
 
 require 'faktory_worker_ruby'
 require 'faktory'
+require 'speech_to_text'
 require 'yaml'
 
 module MozillaDeepspeech
