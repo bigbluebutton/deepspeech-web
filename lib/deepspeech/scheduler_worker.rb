@@ -1,18 +1,8 @@
 # frozen_string_literal: true
 
 require 'faktory_worker_ruby'
-require 'connection_pool'
-require 'securerandom'
 require 'faktory'
-require 'json'
-require 'sqlite3'
-require 'speech_to_text'
 require 'yaml'
-
-rails_environment_path = File.expand_path(
-  File.join(__dir__, '..', '..', 'config', 'environment')
-)
-require rails_environment_path
 
 module MozillaDeepspeech
   class SchedulerWorker # rubocop:disable Style/Documentation
@@ -32,8 +22,6 @@ module MozillaDeepspeech
       job_key = props['redis_jobs_transcript']
       num_entries = redis.llen(job_key)
       puts "num_entries = #{num_entries}"
-
-
       
     # for i in 1..num_entries do
     _job_list, data = redis.blpop(job_key)
