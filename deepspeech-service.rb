@@ -3,6 +3,7 @@
 require './lib/deepspeech'
 require 'connection_pool'
 require 'sqlite3'
+require 'yaml'
 
 
 props = YAML.load_file('settings.yaml')
