@@ -21,7 +21,7 @@ module MozillaDeepspeech
 
     def perform(job_id) # rubocop:disable Metrics/MethodLength
         
-      props = YAML.load_file('../../settings.yaml')
+      props = YAML.load_file('settings.yaml')
 
       puts "in transcript worker job_id == #{job_id}"
       if job_id.nil?
