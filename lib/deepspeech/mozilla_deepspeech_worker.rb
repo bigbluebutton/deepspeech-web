@@ -20,17 +20,21 @@ module MozillaDeepspeech
     faktory_options retry: 0, concurrency: 1
 
     def perform(job_id) # rubocop:disable Metrics/MethodLength
+        
+      props = YAML.load_file('../../settings.yaml')
 
       puts "in transcript worker job_id == #{job_id}"
       if job_id.nil?
         puts "inside nil block"
         sleep (10)
-        MozillaDeepspeech::SchedulerWorker.perform_async()
+        if props['deepspeech_version']=='gpu'
+            MozillaDeepspeech::SchedulerWorker.perform_async()
+        end
         return
       end
       status = 'inProgress'
       update_status(job_id, status)
-      props = YAML.load_file('settings.yaml')
+      #props = YAML.load_file('settings.yaml')
       model_path = props['model_path']
       puts model_path
       filepath = "#{Rails.root}/storage/#{job_id}"
@@ -54,7 +58,10 @@ module MozillaDeepspeech
       end
       update_status(job_id, status)
       puts "done transcript.. #{job_id}"
-      MozillaDeepspeech::SchedulerWorker.perform_async()
+      
+      if props['deepspeech_version']=='gpu'
+        MozillaDeepspeech::SchedulerWorker.perform_async()
+      end
     end
 
     def update_status(job_id, status)

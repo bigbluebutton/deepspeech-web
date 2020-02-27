@@ -32,11 +32,11 @@ module MozillaDeepspeech
       num_entries = redis.llen(job_key)
       puts "num_entries = #{num_entries}"
       
-    # for i in 1..num_entries do
-    _job_list, data = redis.blpop(job_key)
-    job_entry = JSON.parse(data)
-    puts "job_entry...#{job_entry['job_id']}"
-    MozillaDeepspeech::TranscriptWorker.perform_async(job_entry['job_id'])
+      # for i in 1..num_entries do
+      _job_list, data = redis.blpop(job_key)
+      job_entry = JSON.parse(data)
+      puts "job_entry...#{job_entry['job_id']}"
+      MozillaDeepspeech::TranscriptWorker.perform_async(job_entry['job_id'])
     end
 
   end
