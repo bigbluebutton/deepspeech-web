@@ -18,7 +18,7 @@ module MozillaDeepspeech
     include Faktory::Job
     faktory_options retry: 0, concurrency: 1
 
-    def perform(request) # rubocop:disable Metrics/MethodLength
+    def perform() # rubocop:disable Metrics/MethodLength
     
       props = YAML.load_file('settings.yaml')  
         
