@@ -103,31 +103,6 @@ Example:
 sudo chown -R texttrack:texttrack /usr/local/deepspeech-web
 ```
 
-# Running Rails Application
-Go to rails root directory and execute following commands
-
-Install dependencies
-```
-bundle install
-```
-
-Execute migration to create database
-```
-rake db:migrate
-```
-
-# Security
-** Create credentials and add apikey
-```
-touch credentials.yaml
-
-* you can generate your own apikey. You don't need to go anywhere to get apikey.
-sudo nano credentials.yaml (refer example-credentails.yaml in the working dir)
-
-```
-
-You can use port_number = 3000 or 4000
-
 # Install Mozilla deepspeech
 1. Install dependencies
 ```
@@ -153,7 +128,7 @@ export PYTHON_BIN_PATH="/usr/bin/python3.6"
 3. Install Bazel and update PATH variable
 3.1 Download Bazel 0.15 compatible to tensorflow 1.12.0
  
- Create installation dir called deepspeech
+Create installation dir called deepspeech
 ```
 sudo mkdir deepspeech
 cd deepspeech
@@ -246,7 +221,7 @@ pip3 install deepspeech==0.6.1
 ```
 
 For deepspeech-gpu(currently only works with nvidia gpus)
-Install cuda 10 dependencies at (https://www.tensorflow.org/install/gpu)
+### IMPORTANT STEP -> Install cuda 10 dependencies at (https://www.tensorflow.org/install/gpu)
 Then follow commands below to get tensorflow-gpu & deepspeech-gpu
 ```
 pip install tensorflow-gpu
@@ -276,6 +251,7 @@ cd /home/deepspeech/temp
 ```
 
 At this point, you should get words for sample audios inside the temp/audio directory.
+
 # Redis server
 ```
 sudo apt-get update
@@ -337,7 +313,7 @@ sudo cat /etc/faktory/password (Manually find password if ever needed)
 
 Find password
 ```
-cat /etc/faktory/password
+sudo cat /etc/faktory/password
 ```
 # Set password
 Open working_dir/service/deepspeech_worker.service and find this line given below.
@@ -345,10 +321,33 @@ Open working_dir/service/deepspeech_worker.service and find this line given belo
 Replace your pasword with <password> . save & exit
 Do the same thing for `working_dir/service/deepspeech_service.service`
 
-# Clone github repo
+# Clone github repo (Deepspeech-web application)
 ```
 cd /usr/local
 git clone https://github.com/bigbluebutton/deepspeech-web.git
+```
+
+# Running Rails Application
+Go to rails root directory and execute following commands
+
+Install dependencies
+```
+bundle install
+```
+
+Execute migration to create database
+```
+rake db:migrate
+```
+
+# Security
+** Create credentials and add apikey
+```
+touch credentials.yaml
+
+* you can generate your own apikey. You don't need to go anywhere to get apikey.
+sudo nano credentials.yaml (refer example-credentails.yaml in the working dir)
+
 ```
 
 # Copy /usr/local/deepspeech-web/service/<all-files>.service to /etc/systemd/system
@@ -362,7 +361,7 @@ sudo cp *.service /etc/systemd/system
 cd /usr/local/deepspeech-web
 sudo nano settings.yaml
 ```
-update the model_path with path to your deepspeech-model
+update the model_path with path to your deepspeech-model path
 next update deepspeech_version depending on if you are using cpu or gpu for deepspeech-transcription(cpu is default)
 
 # Start all services

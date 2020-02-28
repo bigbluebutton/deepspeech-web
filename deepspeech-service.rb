@@ -50,5 +50,9 @@ elsif props['deepspeech_version']=='gpu'
         end
     end
 
+else
+    
+    puts "No deepspeech-version found\nEdit your settings.yaml to include deepspeech_version: and set it to cpu or gpu."
+
 end
 
