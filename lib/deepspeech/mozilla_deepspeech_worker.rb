@@ -65,6 +65,7 @@ module MozillaDeepspeech
           end
     rescue Exception => e
         puts "process failed due to #{e.inspect}"
+        MozillaDeepspeech::SchedulerWorker.perform_async()
     end
     end
 

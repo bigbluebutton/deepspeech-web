@@ -29,18 +29,6 @@ if props['deepspeech_version']=='cpu'
     end
     
 elsif props['deepspeech_version']=='gpu'
-
-    #props = YAML.load_file('settings.yaml')  
-      
-#    redis = if ENV['REDIS_URL'].nil?
-#      Redis.new
-#    else
-#      Redis.new(url: ENV['REDIS_URL'])
-#    end
-#
-#    job_key = props['redis_jobs_transcript']
-#    num_entries = redis.llen(job_key)
-#    puts "num_entries = #{num_entries}"
     
     counter = 1
     loop do
