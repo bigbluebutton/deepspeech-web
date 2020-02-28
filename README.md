@@ -239,6 +239,7 @@ sudo tar xvf audio-0.6.1.tar.gz
 ```
 
 8. If you want to update the deepspeech version in future (depending on if you want to use the gpu or not - only install 1 `both pip & pip3`)
+
 ```
 pip install deepspeech==0.6.1
 pip3 install deepspeech==0.6.1
@@ -252,6 +253,7 @@ pip install tensorflow-gpu
 pip install deepspeech-gpu==0.6.1
 pip3 install deepspeech-gpu==0.6.1
 ```
+
 To check the load on the gpu at any point `nvidia-smi` should work in the terminal.
 
 Now we need to replace our old deepspeech with the new one in `home/deepspeech/temp`
@@ -343,12 +345,25 @@ Open working_dir/service/deepspeech_worker.service and find this line given belo
 Replace your pasword with <password> . save & exit
 Do the same thing for `working_dir/service/deepspeech_service.service`
 
+# Clone github repo
+```
+cd /usr/local
+git clone https://github.com/bigbluebutton/deepspeech-web.git
+```
 
 # Copy /usr/local/deepspeech-web/service/<all-files>.service to /etc/systemd/system
 ```
 cd /usr/local/deepspeech-web/service/
 sudo cp *.service /etc/systemd/system
 ```
+
+# Remember to edit settings.yaml
+```
+cd /usr/local/deepspeech-web
+sudo nano settings.yaml
+```
+update the model_path with path to your deepspeech-model
+next update deepspeech_version depending on if you are using cpu or gpu for deepspeech-transcription(cpu is default)
 
 # Start all services
 ```

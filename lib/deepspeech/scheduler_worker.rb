@@ -20,17 +20,17 @@ module MozillaDeepspeech
 
     def perform() # rubocop:disable Metrics/MethodLength
     
-      props = YAML.load_file('settings.yaml')  
-      
-      redis = if ENV['REDIS_URL'].nil?
-        Redis.new
-      else
-        Redis.new(url: ENV['REDIS_URL'])
-      end
-
-      job_key = props['redis_jobs_transcript']
-      num_entries = redis.llen(job_key)
-      puts "num_entries = #{num_entries}"
+#      props = YAML.load_file('settings.yaml')  
+#      
+#      redis = if ENV['REDIS_URL'].nil?
+#        Redis.new
+#      else
+#        Redis.new(url: ENV['REDIS_URL'])
+#      end
+#
+#      job_key = props['redis_jobs_transcript']
+#      num_entries = redis.llen(job_key)
+#      puts "num_entries = #{num_entries}"
       
       # for i in 1..num_entries do
       _job_list, data = redis.blpop(job_key)
