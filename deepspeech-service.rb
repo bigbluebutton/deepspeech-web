@@ -41,8 +41,14 @@ elsif props['deepspeech_version']=='gpu'
 #    job_key = props['redis_jobs_transcript']
 #    num_entries = redis.llen(job_key)
 #    puts "num_entries = #{num_entries}"
-
-    MozillaDeepspeech::SchedulerWorker.perform_async()
+    
+    counter = 1
+    loop do
+        if counter == 1
+            MozillaDeepspeech::SchedulerWorker.perform_async()
+            counter = counter + 1
+        end
+    end
 
 end
 
