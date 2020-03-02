@@ -143,8 +143,8 @@ sudo chmod +x bazel-0.15.0-installer-linux-x86_64.sh
 sudo ./bazel-0.15.0-installer-linux-x86_64.sh –-user --bin=$HOME/bin
 
 #if you get an error in above command then remove user flag
-$user/deepspeech: sudo ./bazel-0.15.0-installer-linux-x86_64.sh
-$user/deepspeech: export PATH="$PATH:/home/<user>/bin"
+sudo ./bazel-0.15.0-installer-linux-x86_64.sh
+export PATH="$PATH:/home/texttrack/bin"
 #you will get path after successfully executing command
 #for example: make sure you have /home/user/bin dir in your system
 #The --user flag installs Bazel to the $HOME/bin directory on your system and sets the .bazelrc path to $HOME/.bazelrc.
@@ -183,6 +183,8 @@ sudo apt-get install python
 ```
 
 5.2 execute build command and have a cup of tea because usually it takes 20-25 mins to build. However, time is depending on server  configurations
+### IMPORTANT
+If the command below fails for an error that says package not found native_client continue with the rest of the steps & deepspeech should work for you
 ```
 sudo bazel build --config=monolithic -c opt --copt=-O3 --copt="-D_GLIBCXX_USE_CXX11_ABI=0" --copt=-fvisibility=hidden //native_client:libdeepspeech.so //native_client:generate_trie
 ```
