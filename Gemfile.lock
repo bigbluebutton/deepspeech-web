@@ -194,7 +194,7 @@ GEM
       mini_portile2 (~> 2.4.0)
     os (1.0.1)
     public_suffix (3.1.1)
-    puma (3.12.3)
+    puma (3.12.4)
     rack (2.1.2)
     rack-cache (1.9.0)
       rack (>= 0.4)
