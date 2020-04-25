@@ -17,34 +17,56 @@ require rails_environment_path
 module MozillaDeepspeech
   class TranscriptWorker # rubocop:disable Style/Documentation
     include Faktory::Job
-    faktory_options retry: 2, concurrency: 5
+    faktory_options retry: 0, concurrency: 1
 
     def perform(job_id) # rubocop:disable Metrics/MethodLength
-      status = 'inProgress'
-      update_status(job_id, status)
+        
       props = YAML.load_file('settings.yaml')
-      model_path = props['model_path']
-      puts model_path
-      filepath = "#{Rails.root}/storage/#{job_id}"
       
-      SpeechToText::MozillaDeepspeechS2T.generate_transcript(
-        "#{filepath}/audio.wav",
-        "#{filepath}/audio.json",
-        model_path
-      )
+      begin
+          puts "in transcript worker job_id == #{job_id}"
+          if job_id.nil?
+            puts "inside nil block"
+            sleep (10)
+            if props['deepspeech_version']=='gpu'
+                MozillaDeepspeech::SchedulerWorker.perform_async()
+            end
+            return
+          end
+          status = 'inProgress'
+          update_status(job_id, status)
+          #props = YAML.load_file('settings.yaml')
+          model_path = props['model_path']
+          puts model_path
+          filepath = "#{Rails.root}/storage/#{job_id}"
+          puts "generating transcript... #{job_id}"
+          SpeechToText::MozillaDeepspeechS2T.generate_transcript(
+            "#{filepath}/audio.wav",
+            "#{filepath}/audio.json",
+            model_path
+          )
 
-      if File.exist?("#{Rails.root}/storage/#{job_id}/audio.json")
-        file = File.open("#{Rails.root}/storage/#{job_id}/audio.json", 'r')
-        data = JSON.load file
-        status = if data['words'].nil?
-                   'failed'
-                 else
-                   'completed'
-                 end
-      else
-        status = 'failed'
-      end
-      update_status(job_id, status)
+          if File.exist?("#{Rails.root}/storage/#{job_id}/audio.json")
+            file = File.open("#{Rails.root}/storage/#{job_id}/audio.json", 'r')
+            data = JSON.load file
+            status = if data['words'].nil?
+                       'failed'
+                     else
+                       'completed'
+                     end
+          else
+            status = 'failed'
+          end
+          update_status(job_id, status)
+          puts "done transcript.. #{job_id}"
+
+          if props['deepspeech_version']=='gpu'
+            MozillaDeepspeech::SchedulerWorker.perform_async()
+          end
+    rescue Exception => e
+        puts "process failed due to #{e.inspect}"
+        MozillaDeepspeech::SchedulerWorker.perform_async()
+    end
     end
 
     def update_status(job_id, status)

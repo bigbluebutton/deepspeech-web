@@ -13,6 +13,7 @@
 # $LOAD_PATH << path
 
 require_relative './deepspeech/mozilla_deepspeech_worker'
+require_relative './deepspeech/scheduler_worker'
 
 module Deepspeech # rubocop:disable Style/Documentation
   def self.logger=(log)

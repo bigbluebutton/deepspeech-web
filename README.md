@@ -103,31 +103,6 @@ Example:
 sudo chown -R texttrack:texttrack /usr/local/deepspeech-web
 ```
 
-# Running Rails Application
-Go to rails root directory and execute following commands
-
-Install dependencies
-```
-bundle install
-```
-
-Execute migration to create database
-```
-rake db:migrate
-```
-
-# Security
-** Create credentials and add apikey
-```
-touch credentials.yaml
-
-* you can generate your own apikey. You don't need to go anywhere to get apikey.
-sudo nano credentials.yaml (refer example-credentails.yaml in the working dir)
-
-```
-
-You can use port_number = 3000 or 4000
-
 # Install Mozilla deepspeech
 1. Install dependencies
 ```
@@ -153,7 +128,7 @@ export PYTHON_BIN_PATH="/usr/bin/python3.6"
 3. Install Bazel and update PATH variable
 3.1 Download Bazel 0.15 compatible to tensorflow 1.12.0
  
- Create installation dir called deepspeech
+Create installation dir called deepspeech
 ```
 sudo mkdir deepspeech
 cd deepspeech
@@ -168,8 +143,8 @@ sudo chmod +x bazel-0.15.0-installer-linux-x86_64.sh
 sudo ./bazel-0.15.0-installer-linux-x86_64.sh –-user --bin=$HOME/bin
 
 #if you get an error in above command then remove user flag
-$user/deepspeech: sudo ./bazel-0.15.0-installer-linux-x86_64.sh
-$user/deepspeech: export PATH="$PATH:/home/<user>/bin"
+sudo ./bazel-0.15.0-installer-linux-x86_64.sh
+export PATH="$PATH:/home/texttrack/bin"
 #you will get path after successfully executing command
 #for example: make sure you have /home/user/bin dir in your system
 #The --user flag installs Bazel to the $HOME/bin directory on your system and sets the .bazelrc path to $HOME/.bazelrc.
@@ -208,6 +183,8 @@ sudo apt-get install python
 ```
 
 5.2 execute build command and have a cup of tea because usually it takes 20-25 mins to build. However, time is depending on server  configurations
+### IMPORTANT
+If the command below fails for an error that says package not found native_client continue with the rest of the steps & deepspeech should work for you
 ```
 sudo bazel build --config=monolithic -c opt --copt=-O3 --copt="-D_GLIBCXX_USE_CXX11_ABI=0" --copt=-fvisibility=hidden //native_client:libdeepspeech.so //native_client:generate_trie
 ```
@@ -239,13 +216,22 @@ sudo tar xvf audio-0.6.1.tar.gz
 ```
 
 8. If you want to update the deepspeech version in future (depending on if you want to use the gpu or not - only install 1 `both pip & pip3`)
+
 ```
 pip install deepspeech==0.6.1
 pip3 install deepspeech==0.6.1
+```
 
+For deepspeech-gpu(currently only works with nvidia gpus)
+### IMPORTANT STEP -> Install cuda 10 dependencies at (https://www.tensorflow.org/install/gpu)
+Then follow commands below to get tensorflow-gpu & deepspeech-gpu
+```
+pip install tensorflow-gpu
 pip install deepspeech-gpu==0.6.1
 pip3 install deepspeech-gpu==0.6.1
 ```
+
+To check the load on the gpu at any point `nvidia-smi` should work in the terminal.
 
 Now we need to replace our old deepspeech with the new one in `home/deepspeech/temp`
 ```
@@ -267,6 +253,7 @@ cd /home/deepspeech/temp
 ```
 
 At this point, you should get words for sample audios inside the temp/audio directory.
+
 # Redis server
 ```
 sudo apt-get update
@@ -328,7 +315,7 @@ sudo cat /etc/faktory/password (Manually find password if ever needed)
 
 Find password
 ```
-cat /etc/faktory/password
+sudo cat /etc/faktory/password
 ```
 # Set password
 Open working_dir/service/deepspeech_worker.service and find this line given below.
@@ -336,12 +323,48 @@ Open working_dir/service/deepspeech_worker.service and find this line given belo
 Replace your pasword with <password> . save & exit
 Do the same thing for `working_dir/service/deepspeech_service.service`
 
+# Clone github repo (Deepspeech-web application)
+```
+cd /usr/local
+git clone https://github.com/bigbluebutton/deepspeech-web.git
+```
+
+# Running Rails Application
+Go to rails root directory and execute following commands
+
+Install dependencies
+```
+bundle install
+```
+
+Execute migration to create database
+```
+rake db:migrate
+```
+
+# Security
+** Create credentials and add apikey
+```
+touch credentials.yaml
+
+* you can generate your own apikey. You don't need to go anywhere to get apikey.
+sudo nano credentials.yaml (refer example-credentails.yaml in the working dir)
+
+```
 
 # Copy /usr/local/deepspeech-web/service/<all-files>.service to /etc/systemd/system
 ```
 cd /usr/local/deepspeech-web/service/
 sudo cp *.service /etc/systemd/system
 ```
+
+# Remember to edit settings.yaml
+```
+cd /usr/local/deepspeech-web
+sudo nano settings.yaml
+```
+update the model_path with path to your deepspeech-model path
+next update deepspeech_version depending on if you are using cpu or gpu for deepspeech-transcription(cpu is default)
 
 # Start all services
 ```
