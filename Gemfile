@@ -12,7 +12,7 @@ gem 'rails', '~> 5.2.3'
 gem 'speech_to_text', '0.1.7'
 gem 'sqlite3'
 # Use Puma as the app server
-gem 'puma', '~> 3.12'
+gem 'puma', '~> 4.3'
 # Use SCSS for stylesheets
 gem 'faktory_worker_ruby'
 gem 'redis', '4.1.2'
